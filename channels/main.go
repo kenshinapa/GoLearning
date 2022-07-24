@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -39,12 +40,22 @@ func main() {
 		// fmt.Println(<-c)
 		// Not forever because wait for the channel to receive a message is a blocking call.
 		// go checkLink(<-c, c)
-		// Equical to the above line.
-		go checkLink(l, c)
+		// Equivalent to the above line.
+		// go checkLink(l, c)
+		// time.Sleep(1 * time.Second) // Not the best place to call the sleep.
+		// go checkLink(l, c)
+		// Function literal. (Anonymous function, like lambda functions in python)
+		go func(link string) {
+			time.Sleep(2 * time.Second)
+			// The child routine and the main routine are pointing to the same reference "l".
+			// checkLink(l, c) // By this point, the link string was not being passed as argument.
+			checkLink(link, c)
+		}(l)
 	}
 }
 
 func checkLink(link string, c chan string) {
+	// time.Sleep(1 * time.Second) // Also, not the best place to call the sleep.
 	_, err := http.Get(link)
 	if err != nil {
 		fmt.Println(link, "might be down!")
