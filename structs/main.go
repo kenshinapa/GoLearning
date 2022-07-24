@@ -1,0 +1,27 @@
+package main
+
+import "fmt"
+
+// Defining structs
+type person struct {
+	firstName string
+	lastName  string
+}
+
+func main() {
+	// Ways to create a new "person"
+
+	// Based on order of properties
+	// alex := person{"Alex", "Anderson"}
+
+	// Other way
+	// alex := person{firstName: "Alex", lastName: "Anderson"}
+
+	// Yet, another way to initialize struct
+	// This adds a "zero value" to the struct properties. Zero values: "", 0, false
+	var alex person
+	alex.firstName = "Alex"
+	alex.lastName = "Anderson"
+	fmt.Println(alex)
+	fmt.Printf("%+v", alex)
+}
